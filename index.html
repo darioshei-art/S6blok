@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>بلوک S6</title>
+<meta name="theme-color" content="#070b16">
+<script src="lib/html2canvas.min.js"></script>
+<script src="lib/jspdf.umd.min.js"></script>
+<style>
+@font-face{font-family:V;src:url(fonts/vazirmatn-arabic-wght-normal.woff2);font-weight:100 900;unicode-range:U+0600-06FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE80-FEFC}
+@font-face{font-family:V;src:url(fonts/vazirmatn-latin-wght-normal.woff2);font-weight:100 900;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2212,U+FEFF}
+:root{--bg:#070b16;--card:#121a2e;--in:#0d1424;--tx:#eef1f8;--mu:#8b97b3;--gold:#f6c343;--blue:#38d0f5;--red:#ff5468;--grn:#2fd98a;--ln:#243050}
+*{box-sizing:border-box;font-family:V,Tahoma,sans-serif;-webkit-tap-highlight-color:transparent}
+body{margin:0;color:var(--tx);min-height:100vh;font-size:13.5px;line-height:1.7;background:radial-gradient(900px 500px at 85% -10%,#2a2470 0,transparent 60%),radial-gradient(700px 500px at -10% 110%,#0d3b57 0,transparent 55%),var(--bg);background-attachment:fixed;padding-bottom:50px}
+header{display:flex;align-items:center;gap:10px;margin:10px;padding:10px 12px;background:rgba(18,26,46,.94);border:1px solid var(--ln);border-radius:16px;position:sticky;top:8px;z-index:5;box-shadow:0 8px 24px #0006}
+.lg{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#ffe08a,#e0a100);color:#1a1200;font-weight:900;display:grid;place-items:center;font-size:15px}
+header b{flex:1;font-size:15px;font-weight:800}header small{display:block;color:var(--mu);font-weight:400;font-size:10px}
+.mb{background:var(--in);border:1px solid var(--ln);color:var(--blue);font-size:20px;width:38px;height:38px;padding:0;border-radius:12px}
+.pill{background:linear-gradient(135deg,#1e2b4a,#16213a);border:1px solid #33456f;color:var(--gold);border-radius:12px;padding:4px 10px;font-size:11px;font-weight:700;text-align:center}
+.card{background:linear-gradient(180deg,#151f37,#101830);margin:10px;padding:14px;border-radius:18px;border:1px solid var(--ln);box-shadow:0 8px 22px #0005}
+h3{margin:0 0 10px;color:var(--gold);font-size:15px;font-weight:800}h4{margin:0;font-size:14px}
+label{display:block;margin:10px 0 4px;color:var(--gold);font-size:11.5px;font-weight:600}
+input,select,textarea{width:100%;padding:11px 12px;border-radius:12px;border:1px solid #2d3b5e;background:var(--in);color:var(--tx);font-size:13.5px;outline:0;transition:.25s}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #38d0f533}
+select{background:var(--in);color:var(--tx)}option{background:#121a2e}
+button{border:0;border-radius:12px;padding:11px 14px;font-weight:700;font-size:13px;cursor:pointer;color:#05202a;background:linear-gradient(135deg,#6be3ff,#17b6e0);box-shadow:0 4px 12px #0004;transition:.2s}
+button:active{transform:scale(.95)}
+.b-y{background:linear-gradient(135deg,#ffe08a,#e8a900)}.b-r{background:linear-gradient(135deg,#ff7a8a,#e03650);color:#fff}.b-g{background:linear-gradient(135deg,#6af0b0,#1fbf73)}
+.w{width:100%;margin-top:12px}.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:120px}
+.tw{overflow-x:auto;border-radius:12px}table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{background:#0c1426;color:var(--blue);padding:9px 6px;font-weight:700;white-space:nowrap}td{padding:9px 6px;border-bottom:1px solid #1d2947;text-align:center}tr:hover td{background:#18233f}
+.bd{display:inline-block;padding:2px 8px;border-radius:20px;font-weight:700;font-size:11px}.cr{color:var(--grn);background:#2fd98a1f}.db{color:var(--red);background:#ff54681f}.z{color:var(--mu)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px}
+.st{padding:12px 8px;border-radius:16px;text-align:center;border:1px solid var(--ln);background:linear-gradient(160deg,#17223d,#0f1830)}
+.st small{display:block;color:var(--mu);font-size:10px}.st b{font-size:15px;font-weight:800}.st.g b{color:var(--grn)}.st.r b{color:var(--red)}.st.b b{color:var(--blue)}
+.warn{color:#ffd77a;border-color:#6b5415;background:#2a2108}
+#ov{position:fixed;inset:0;background:#000a;opacity:0;pointer-events:none;transition:.3s;z-index:15}#ov.o{opacity:1;pointer-events:auto}
+#drawer{position:fixed;top:0;right:0;width:78%;max-width:310px;height:100%;background:linear-gradient(180deg,#0f1730,#0a0f20);border-left:1px solid #2a3a63;transform:translateX(105%);transition:transform .35s cubic-bezier(.2,.9,.3,1);z-index:20;padding:14px;overflow-y:auto}
+#drawer.o{transform:none}.dh{color:var(--blue);font-weight:800;margin-bottom:8px;display:flex;gap:8px;align-items:center}.dh b{background:var(--gold);color:#000;border-radius:8px;padding:0 8px}
+#drawer a{display:block;padding:12px;margin:6px 0;background:#141e38;border-radius:12px;cursor:pointer;transition:.2s;border-right:3px solid transparent}
+#drawer a:active{transform:scale(.97)}#drawer a.on{color:var(--gold);border-right-color:var(--gold);background:#1b2748}
+.bar{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:10.5px}.bar span{width:46px;color:var(--mu)}.bar i{display:block;height:10px;border-radius:6px;animation:gr 1s cubic-bezier(.2,.9,.3,1) both}
+@keyframes gr{from{width:0!important}}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+#app>*{animation:up .5s cubic-bezier(.2,.9,.3,1) both}#app>*:nth-child(2){animation-delay:.07s}#app>*:nth-child(3){animation-delay:.14s}#app>*:nth-child(4){animation-delay:.21s}#app>*:nth-child(n+5){animation-delay:.28s}#app.na>*{animation:none}
+.lst{padding:10px;border-radius:14px;background:#0b1224}.lh{display:flex;justify-content:space-between;align-items:center;gap:8px}.lh small{color:var(--mu)}
+.cnt{display:flex;gap:6px;font-size:11px;font-weight:700}.cnt span{background:#1a2442;border-radius:10px;padding:2px 8px}.cnt .g{color:var(--grn)}.cnt .r{color:var(--red)}
+.pb{height:6px;background:#1a2442;border-radius:6px;margin:10px 0;overflow:hidden}.pb i{display:block;height:100%;background:linear-gradient(90deg,#1fbf73,#6af0b0);border-radius:6px;transition:width .5s}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.tile{position:relative;background:#141e38;border:1.5px solid #26355c;border-radius:14px;padding:8px 2px 6px;text-align:center;cursor:pointer;transition:.25s;overflow:hidden}
+.tile b{display:block;font-size:17px;font-weight:800}.tile small{display:block;font-size:9px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 3px}
+.tile span{position:absolute;top:2px;left:5px;font-size:13px;font-weight:900}.tile:active{transform:scale(.92)}
+.tile.s1{background:linear-gradient(160deg,#10392b,#0c2a20);border-color:var(--grn)}.tile.s1 span,.tile.s1 b{color:var(--grn)}
+.tile.s2{background:linear-gradient(160deg,#431520,#2c0e16);border-color:var(--red)}.tile.s2 span,.tile.s2 b{color:var(--red)}
+.big{font-size:20px;color:var(--gold);font-weight:800}
+#toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,30px);background:#e8ecf5;color:#111;padding:10px 18px;border-radius:30px;font-weight:700;opacity:0;transition:.35s;z-index:40;pointer-events:none;max-width:90%;text-align:center}#toast.s{opacity:1;transform:translate(-50%,0)}
+#splash{position:fixed;inset:0;background:var(--bg);z-index:50;display:grid;place-content:center;text-align:center;gap:10px;animation:sp 1.5s forwards;pointer-events:none}
+#splash .lg{width:84px;height:84px;font-size:34px;border-radius:26px;margin:auto;animation:pop .9s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes pop{from{transform:scale(.3);opacity:0}to{transform:none;opacity:1}}@keyframes sp{0%,65%{opacity:1}100%{opacity:0;visibility:hidden}}
+</style></head></head><body>
+<header><button class="mb" onclick="toggleD()">☰</button><div class="lg">S6</div><b>بلوک S6<small>داشبورد مالی هوشمند</small></b><span class="pill" id="fundP"></span></header>
+<div id="ov" onclick="closeD()"></div><div id="drawer"></div><div id="toast"></div><div id="splash"><div class="lg">S6</div><b style="color:var(--gold)">مدیریت هوشمند بلوک</b></div><div id="app"></div>
+<script>
+const $=s=>document.querySelector(s),D=$('#drawer'),A=$('#app');
+const fmt=n=>Math.round(n||0).toLocaleString('en-US'),e=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const today=()=>{const p=Object.fromEntries(new Intl.DateTimeFormat('fa-IR-u-ca-persian-nu-latn',{year:'numeric',month:'numeric',day:'numeric'}).formatToParts(new Date()).map(x=>[x.type,x.value]));return`${p.year}/${p.month}/${p.day}`};
+let S=JSON.parse(localStorage.s6||'null')||{fundBase:0,tx:[],lists:[],units:Array.from({length:20},(_,i)=>({n:String(i+1),own:'',ownPh:'',ten:'',tenPh:'',rate:0,st:'ساکن',park:'',store:'',note:''}))};
+const ov=$('#ov');function toggleD(){D.classList.toggle('o');ov.classList.toggle('o')}function closeD(){D.classList.remove('o');ov.classList.remove('o')}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('s');clearTimeout(t.h);t.h=setTimeout(()=>t.classList.remove('s'),2200)}
+const NAV=[['dash','📈 میز کار و تراز واحدها'],['units','🏢 ثبت و ویرایش واحدها'],['tx','🧾 ثبت تراکنش و فیش تکی'],['group','📚 صدور شارژ گروهی پیشرفته'],['list','✅ ثبت به صورت لیست'],['debts','🤝 ویرایش و تسویه بدهی‌ها'],['rep','📄 بیلان عمومی و گزارشات'],['sync','🏦 همگام‌سازی صندوق'],['cloud','💾 پشتیبان و بازیابی']];
+const bal=(u,r)=>S.tx.filter(t=>t.u==u&&t.r==r).reduce((a,t)=>a+(t.k=='dep'?t.a:-t.a),0);
+const fund=()=>S.fundBase+S.tx.reduce((a,t)=>a+(t.k=='dep'?t.a:t.k=='rep'?-t.a:0),0);
+const uopt=(sel)=>'<option value=""></option>'+S.units.map(u=>`<option ${sel==u.n?'selected':''} value="${e(u.n)}">واحد شماره ${e(u.n)}</option>`).join('');
+function save(){localStorage.s6=JSON.stringify(S);$('#fundP').textContent='موجودی کل صندوق: '+fmt(fund())+' تومان';}
+function go(v,q){closeD();D.innerHTML='<div class="dh"><b>S6</b> ناوبری سریع</div>'+NAV.map(n=>`<a class="${n[0]==v?'on':''}" onclick="go('${n[0]}')">${n[1]}</a>`).join('');A.classList.toggle('na',!!q);A.innerHTML=V[v]();save();if(!q)scrollTo(0,0)}
+async function saveFile(name,b64,mime){name=name.replace(/[^\w.-]/g,'_');const C=window.Capacitor;if(C&&C.isNativePlatform&&C.isNativePlatform()){try{const r=await C.registerPlugin('Filesystem').writeFile({path:name,data:b64,directory:'CACHE'});await C.registerPlugin('Share').share({title:name,url:r.uri,dialogTitle:'ذخیره یا ارسال فایل'})}catch(x){toast('ذخیره فایل ناموفق بود')}}else{const a=document.createElement('a');a.href='data:'+mime+';base64,'+b64;a.download=name;a.click()}}
+function exp(id,type,name){toast('در حال ساخت فایل…');html2canvas(document.getElementById(id),{scale:3,backgroundColor:'#0b1020',useCORS:true}).then(c=>{const j=c.toDataURL('image/jpeg',.95);if(type=='jpg')return saveFile(name+'.jpg',j.split(',')[1],'image/jpeg');const{jsPDF}=window.jspdf,w=190,h=c.height*w/c.width,p=new jsPDF('p','mm',h>277?[210,h+20]:'a4');p.setFillColor(11,16,32);p.rect(0,0,210,h+20,'F');p.addImage(j,'JPEG',10,10,w,h);saveFile(name+'.pdf',p.output('datauristring').split(',')[1],'application/pdf')})}
+const exBtn=(id,n)=>`<div class="row" style="margin:0 10px 10px"><button class="b-y" onclick="exp('${id}','pdf','${n}')">⬇️ PDF</button><button onclick="exp('${id}','jpg','${n}')">🖼 JPEG</button></div>`;
+const K={ownDep:['dep','o','واریز مالک (افزایش بستانکاری صندوق)'],tenDep:['dep','t','واریز مستاجر'],ownDebt:['debt','o','بدهکاری مالک'],tenDebt:['debt','t','بدهکاری مستاجر'],repair:['rep','x','هزینه تعمیرات و بیلان (کسر از صندوق)']};
+function bars(f,col){const m=Math.max(1,...S.units.map(f));return S.units.map(u=>`<div class="bar"><span>واحد ${e(u.n)}</span><i style="width:${f(u)/m*60}%;background:${col}"></i>${fmt(f(u))}</div>`).join('')}
+const V={
+dash(){const td=S.tx.filter(t=>t.k=='dep').reduce((a,t)=>a+t.a,0),dbt=S.units.reduce((a,u)=>a+Math.max(0,-bal(u.n,'o'))+Math.max(0,-bal(u.n,'t')),0),old=Date.now()-(+localStorage.s6bk||0)>2592e6;
+const c=x=>x==0?'<span class="z">تسویه</span>':x>0?`<span class="bd cr">بستانکار ${fmt(x)}</span>`:`<span class="bd db">بدهکار ${fmt(-x)}</span>`;
+return`${old?'<div class="card warn" onclick="go(\'cloud\')">⚠️ بیش از ۳۰ روز از آخرین پشتیبان گذشته؛ برای پشتیبان‌گیری لمس کنید</div>':''}
+<div class="stats"><div class="st g"><small>موجودی صندوق</small><b>${fmt(fund())}</b></div><div class="st r"><small>مجموع بدهی‌ها</small><b>${fmt(dbt)}</b></div><div class="st b"><small>مجموع واریزی‌ها</small><b>${fmt(td)}</b></div></div>
+<div class="card" id="dashT"><h3>📈 تراز مالی واحدها</h3><div class="tw"><table><tr><th>واحد</th><th>مالک</th><th>تراز مالک</th><th>مستاجر</th><th>تراز مستاجر</th></tr>${S.units.map(u=>`<tr><td><b>${e(u.n)}</b></td><td>${e(u.own)||'-'}<br><small class="z">${e(u.ownPh)}</small></td><td>${c(bal(u.n,'o'))}</td><td>${e(u.ten)||'-'}<br><small class="z">${e(u.tenPh)}</small></td><td>${c(bal(u.n,'t'))}</td></tr>`).join('')}</table></div></div>
+<div class="card" id="dashC"><h3>📊 نمودار بدهی‌های واحدها</h3>${bars(u=>Math.max(0,-bal(u.n,'o'))+Math.max(0,-bal(u.n,'t')),'linear-gradient(90deg,#e03650,#ff7a8a)')}<h3 style="margin-top:14px">📊 نمودار واریزی‌ها</h3>${bars(u=>S.tx.filter(t=>t.u==u.n&&t.k=='dep').reduce((a,t)=>a+t.a,0),'linear-gradient(90deg,#1fbf73,#6af0b0)')}</div>${exBtn('dashC','S6-chart')}`},
+units(){return`<div class="card"><h3>👥 پیکربندی هویت مالک، مستاجر و الحاقات واحد</h3>
+<label>انتخاب واحد جهت ویرایش</label><select id="us" onchange="loadU()">${uopt()}</select>
+<label>ایجاد واحد جدید (مثال: 21)</label><input id="un" placeholder="مثال: 21">
+<div class="row"><div><label>وضعیت سکونت</label><select id="ust"><option>ساکن</option><option>خالی</option><option>مالک‌نشین</option></select></div><div><label>پارکینگ</label><input id="upk"></div><div><label>انباری</label><input id="ustr"></div></div>
+<div class="row"><div><label>نام مالک</label><input id="uo"></div><div><label>تلفن مالک</label><input id="uop" type="tel"></div></div>
+<div class="row"><div><label>نام مستاجر</label><input id="ut"></div><div><label>تلفن مستاجر</label><input id="utp" type="tel"></div></div>
+<label>نرخ شارژ اختصاصی ثابت (ستون K)</label><input id="ur" type="number"><label>توضیحات</label><textarea id="uno"></textarea>
+<button class="b-y w" onclick="saveU()">☁️ اعمال تغییرات نهایی و ذخیره</button></div>`},
+tx(){return`<div class="card"><h3>📝 ثبت فیش واریزی یا بدهکاری واحدها و بیلان</h3>
+<label>تاریخ ثبت (شمسی)</label><input id="td" value="${today()}"><label>انتخاب واحد هدف</label><select id="tu">${uopt()}</select>
+<label>نام شخص (پرداخت‌کننده/دریافت‌کننده)</label><input id="tp"><label>دسته و ماهیت مالی</label><select id="tk">${Object.entries(K).map(([k,v])=>`<option value="${k}">${v[2]}</option>`).join('')}</select>
+<label>مبلغ تراکنش (تومان)</label><input id="ta" type="number" inputmode="numeric"><label>شرح تراکنش</label><textarea id="tds"></textarea>
+<button class="w" onclick="addTx()">✔ ثبت قطعی در تراکنش‌های شیت</button></div>`},
+group(){return`<div class="card"><h3>⚡ مکانیزم صدور و ثبت شارژ گروهی همزمان</h3><p style="background:#fff3cd;color:#664;padding:8px;border-radius:8px;font-size:11px">این بخش بدهی را فقط برای <b>واحدهای دارای مستاجر فعال</b> ثبت می‌کند و واحدهای خالی یا بدون مستاجر نادیده گرفته می‌شوند.</p>
+<label>تاریخ صدور شارژ</label><input id="gd" value="${today()}"><label>مخاطب هدف گروهی</label><select id="gt"><option value="t">مستاجران</option><option value="o">مالکان</option></select>
+<label>مبنای محاسبه مبلغ</label><label style="color:var(--blue)"><input type="radio" name="gm" value="rate" checked style="width:auto"> بر اساس شارژ اختصاصی هر واحد</label><label style="color:var(--tx)"><input type="radio" name="gm" value="flat" style="width:auto"> مبلغ یکسان برای همه</label>
+<input id="ga" type="number" placeholder="مبلغ یکسان (در صورت انتخاب)"><label>بابت / شرح</label><textarea id="gx"></textarea><button class="b-r w" onclick="grp()">🔥 اعمال و ثبت گروهی آنی</button></div>`},
+list(){return`<div class="card"><h3>✅ ثبت به صورت لیست</h3><label>عنوان لیست (مثلاً واریزی هزینه ساختمان بابت ...)</label><input id="lt" placeholder="مثلاً: شارژ آبان ۱۴۰۵"><label>تاریخ</label><input id="ld" value="${today()}"><button class="b-y w" onclick="newList()">➕ ساخت لیست برای ${S.units.length} واحد</button></div>
+${S.lists.map(L=>{const v=Object.values(L.r),p=v.filter(x=>x===true).length,n=v.filter(x=>x===false).length,q=S.units.length-p-n;return`<div class="card"><div id="L${L.id}" class="lst"><div class="lh"><div><h4>${e(L.t)}</h4><small>${e(L.d)}</small></div><div class="cnt"><span class="g">✅ ${p}</span><span class="r">❌ ${n}</span><span>⬜ ${q}</span></div></div><div class="pb"><i style="width:${p/S.units.length*100}%"></i></div><div class="tiles">${S.units.map(u=>{const x=L.r[u.n];return`<div class="tile ${x===true?'s1':x===false?'s2':''}" onclick="tog(${L.id},'${e(u.n)}')"><span>${x===true?'✓':x===false?'✕':''}</span><b>${e(u.n)}</b><small>${e(u.ten||u.own)||'—'}</small></div>`}).join('')}</div></div><div class="row" style="margin-top:10px"><button class="b-y" onclick="exp('L${L.id}','pdf','S6-list-${L.id}')">⬇️ PDF</button><button onclick="exp('L${L.id}','jpg','S6-list-${L.id}')">🖼 JPEG</button><button class="b-r" onclick="delList(${L.id})">🗑 حذف</button></div></div>`}).join('')}`},
+debts(){return`<div class="card"><h3>🤝 مدیریت، بررسی و تسویه بدهی‌های واحدها</h3><label>انتخاب واحد</label><select id="du" onchange="debList()">${uopt()}</select><div class="tw" id="dl" style="margin-top:8px"></div></div>`},
+rep(){return`<div class="card"><h3>📄 مرکز گزارش‌گیری و صدور بیلان هوشمند</h3><div class="row"><div><label>واحد یا بخش</label><select id="ru"><option value="">📦 کل واحدها و بیلان بلوک</option><option value="__dep">💰 کل واریزی‌های صندوق</option><option value="__rep">🔧 هزینه‌های تعمیرات و بیلان</option>${uopt()}</select></div>
+<div><label>فیلتر نقش</label><select id="rr"><option value="">همه (مالک و مستاجر)</option><option value="o">مالک</option><option value="t">مستاجر</option></select></div><div><label>جستجو در شرح</label><input id="rs"></div></div><button class="w" onclick="rep()">🔍 جستجو</button></div><div id="ro"></div>`},
+sync(){return`<div class="card"><h3>🏦 همگام‌سازی دستی بیلان صندوق</h3><p>موجودی فعلی: <span class="big">${fmt(fund())}</span> تومان</p><label>موجودی واقعی صندوق</label><input id="sf" type="number"><button class="b-r w" onclick="syncF()">به‌روزرسانی و ثبت کل موجودی مبنا</button></div>`},
+cloud(){const b=+localStorage.s6bk;return`<div class="card"><h3>💾 پشتیبان و بازیابی</h3><p style="color:var(--mu)">اطلاعات روی همین گوشی ذخیره می‌شود و بدون اینترنت کار می‌کند. برای اینکه با حذف برنامه یا عوض کردن گوشی چیزی از دست نرود، گاهی فایل پشتیبان بگیرید و جایی مثل تلگرام یا گالری/فایل‌ها نگه دارید.</p><p>آخرین پشتیبان: <b>${b?new Date(b).toLocaleDateString('fa-IR'):'هنوز گرفته نشده'}</b></p><button class="b-y w" onclick="backup()">⬆️ گرفتن فایل پشتیبان</button><label style="margin-top:16px">بازیابی از فایل پشتیبان</label><input type="file" accept=".json,application/json" onchange="restore(this)"></div>`}};
+// ---- actions
+function loadU(){const u=S.units.find(x=>x.n==$('#us').value);if(!u)return;$('#ust').value=u.st;$('#upk').value=u.park;$('#ustr').value=u.store;$('#uo').value=u.own;$('#uop').value=u.ownPh;$('#ut').value=u.ten;$('#utp').value=u.tenPh;$('#ur').value=u.rate;$('#uno').value=u.note}
+function saveU(){let n=$('#un').value.trim()||$('#us').value;if(!n)return toast('واحد را انتخاب یا شماره جدید وارد کنید');let u=S.units.find(x=>x.n==n);if(!u){u={n};S.units.push(u)}Object.assign(u,{st:$('#ust').value,park:$('#upk').value,store:$('#ustr').value,own:$('#uo').value,ownPh:$('#uop').value,ten:$('#ut').value,tenPh:$('#utp').value,rate:+$('#ur').value||0,note:$('#uno').value});save();toast('ذخیره شد');go('units')}
+function addTx(){const k=$('#tk').value,u=$('#tu').value,a=+$('#ta').value;if(!a||(!u&&k!='repair'))return toast('واحد و مبلغ را وارد کنید');S.tx.push({id:Date.now(),d:$('#td').value,u,p:$('#tp').value,k:K[k][0],r:K[k][1],a,x:$('#tds').value});save();toast('ثبت شد');go('tx')}
+function grp(){const r=$('#gt').value,flat=document.querySelector('[name=gm]:checked').value=='flat',fa=+$('#ga').value;let c=0;S.units.forEach(u=>{if(r=='t'&&!u.ten)return;const a=flat?fa:u.rate;if(!a)return;S.tx.push({id:Date.now()+c,d:$('#gd').value,u:u.n,p:r=='t'?u.ten:u.own,k:'debt',r,a,x:$('#gx').value||'شارژ گروهی'});c++});save();toast(c+' واحد ثبت شد')}
+function newList(){const t=$('#lt').value.trim();if(!t)return toast('عنوان را بنویسید');S.lists.unshift({id:Date.now(),t,d:$('#ld').value,r:{}});go('list')}
+function tog(id,n){const L=S.lists.find(x=>x.id==id),v=L.r[n];L.r[n]=v===undefined?true:v===true?false:undefined;if(L.r[n]===undefined)delete L.r[n];go('list',1)}
+function delList(id){if(confirm('حذف شود؟')){S.lists=S.lists.filter(x=>x.id!=id);go('list')}}
+function debList(){const u=$('#du').value;$('#dl').innerHTML=`<table><tr><th>تاریخ</th><th>نوع</th><th>مبلغ</th><th>شرح</th><th>عملیات</th></tr>${S.tx.filter(t=>t.u==u&&t.k=='debt'&&!t.s).map(t=>`<tr><td>${e(t.d)}</td><td>${t.r=='o'?'مالک':'مستاجر'}</td><td>${fmt(t.a)}</td><td>${e(t.x)}</td><td><button class="b-g" onclick="settle(${t.id})">تسویه</button> <button class="b-r" onclick="delTx(${t.id})">حذف</button></td></tr>`).join('')||'<tr><td colspan=5>بدهی‌ای وجود ندارد</td></tr>'}</table>`}
+function settle(id){const t=S.tx.find(x=>x.id==id);t.s=1;S.tx.push({id:Date.now(),d:today(),u:t.u,p:t.p,k:'dep',r:t.r,a:t.a,x:'تسویه: '+t.x});save();const v=$('#du').value;go('debts');$('#du').value=v;debList()}
+function delTx(id){if(!confirm('حذف شود؟'))return;S.tx=S.tx.filter(x=>x.id!=id);save();const v=$('#du').value;go('debts');$('#du').value=v;debList()}
+function rep(){const u=$('#ru').value,r=$('#rr').value,q=$('#rs').value;let L=S.tx.filter(t=>(!u||(u=='__dep'?t.k=='dep':u=='__rep'?t.k=='rep':t.u==u))&&(!r||t.r==r)&&(!q||(t.x+t.p).includes(q)));$('#ro').innerHTML=`<div class="card" id="rb"><h3>بیلان ${fmt(L.length)} تراکنش — موجودی صندوق: ${fmt(fund())}</h3><div class="tw"><table><tr><th>تاریخ</th><th>واحد</th><th>شخص</th><th>نوع</th><th>مبلغ</th><th>شرح</th></tr>${L.map(t=>`<tr><td>${e(t.d)}</td><td>${e(t.u)||'-'}</td><td>${e(t.p)}</td><td>${t.k=='dep'?'واریز':t.k=='rep'?'هزینه':'بدهی'}</td><td class="${t.k=='dep'?'cr':'db'}">${fmt(t.a)}</td><td>${e(t.x)}</td></tr>`).join('')}</table></div></div>${exBtn('rb','S6-report')}`}
+function syncF(){const v=$('#sf').value;if(v==='')return;S.fundBase+= +v-fund();save();go('sync')}
+function backup(){saveFile('S6-backup-'+Date.now()+'.json',btoa(unescape(encodeURIComponent(JSON.stringify(S)))),'application/json');localStorage.s6bk=Date.now()}
+function restore(i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.units||!d.tx)throw 0;if(!confirm('اطلاعات فعلی با فایل پشتیبان جایگزین شود؟'))return;S=d;save();toast('بازیابی شد ✅');go('dash')}catch(x){toast('فایل معتبر نیست')}};r.readAsText(f)}
+go('dash');
+</script></body></html>
