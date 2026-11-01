@@ -3,13 +3,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>بلوک S6</title>
 <meta name="theme-color" content="#070b16">
-<script src="lib/html2canvas.min.js"></script>
-<script src="lib/jspdf.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap">
+<script>function LD(l,c){var s=document.createElement('script');s.src=l;s.onerror=function(){var f=document.createElement('script');f.src=c;document.head.appendChild(f)};document.head.appendChild(s)}
+LD('lib/html2canvas.min.js','https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');LD('lib/jspdf.umd.min.js','https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js')</script>
 <style>
 @font-face{font-family:V;src:url(fonts/vazirmatn-arabic-wght-normal.woff2);font-weight:100 900;unicode-range:U+0600-06FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE80-FEFC}
 @font-face{font-family:V;src:url(fonts/vazirmatn-latin-wght-normal.woff2);font-weight:100 900;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2212,U+FEFF}
 :root{--bg:#070b16;--card:#121a2e;--in:#0d1424;--tx:#eef1f8;--mu:#8b97b3;--gold:#f6c343;--blue:#38d0f5;--red:#ff5468;--grn:#2fd98a;--ln:#243050}
-*{box-sizing:border-box;font-family:V,Tahoma,sans-serif;-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box;font-family:V,Vazirmatn,Tahoma,sans-serif;-webkit-tap-highlight-color:transparent}
 body{margin:0;color:var(--tx);min-height:100vh;font-size:13.5px;line-height:1.7;background:radial-gradient(900px 500px at 85% -10%,#2a2470 0,transparent 60%),radial-gradient(700px 500px at -10% 110%,#0d3b57 0,transparent 55%),var(--bg);background-attachment:fixed;padding-bottom:50px}
 header{display:flex;align-items:center;gap:10px;margin:10px;padding:10px 12px;background:rgba(18,26,46,.94);border:1px solid var(--ln);border-radius:16px;position:sticky;top:8px;z-index:5;box-shadow:0 8px 24px #0006}
 .lg{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#ffe08a,#e0a100);color:#1a1200;font-weight:900;display:grid;place-items:center;font-size:15px}
@@ -59,7 +61,7 @@ th{background:#0c1426;color:var(--blue);padding:9px 6px;font-weight:700;white-sp
 
 @font-face{font-family:L;src:url(fonts/lalezar-arabic-400-normal.woff2);unicode-range:U+0600-06FF,U+200C-200E,U+FB50-FDFF,U+FE80-FEFC}
 @font-face{font-family:L;src:url(fonts/lalezar-latin-400-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
-h3,.lg,header b,#splash b,.poster .pt b{font-family:L,V,Tahoma,sans-serif;font-weight:400;letter-spacing:.2px}
+h3,.lg,header b,#splash b,.poster .pt b{font-family:L,Lalezar,V,Vazirmatn,Tahoma,sans-serif;font-weight:400;letter-spacing:.2px}
 h3{font-size:17px;display:flex;align-items:center;gap:8px}h3:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,#f6c34355,transparent)}
 .card{border:1px solid transparent;background:linear-gradient(#141d35,#0f1730) padding-box,linear-gradient(135deg,#f6c34377,#243050 45%,#38d0f566) border-box}
 label{font-size:12px}input,select,textarea,button{font-size:13px;min-height:44px}textarea{min-height:76px}
@@ -68,7 +70,7 @@ select{appearance:none;background:#0b1224 url("data:image/svg+xml,%3Csvg xmlns='
 button{border-radius:14px}th,td{font-size:12px}th{background:linear-gradient(#14203d,#0c1426)}
 #drawer a{min-height:46px;display:flex;align-items:center;font-size:13px}
 .poster{position:relative;border-radius:14px;overflow:hidden;line-height:1;background:#fff;margin-top:10px;--u:3.5px}
-.poster img{display:block;width:100%;height:auto}.poster>*:not(img){position:absolute}
+.poster img{display:block;width:100%;height:auto}.poster .miss{position:static!important;aspect-ratio:2/3;display:grid;place-items:center;text-align:center;padding:24px;color:#333;line-height:1.9;font-size:13px}.poster>*:not(img){position:absolute}
 .pt{left:21.3%;width:57.4%;top:3.8%;height:6.4%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#0b1f4d;gap:calc(var(--u)*.5)}
 .pt b{font-size:calc(var(--u)*3.8)}.pt small{font-size:calc(var(--u)*2.1);color:#8a6a10;font-weight:700}
 .bn{left:7.1%;width:85.3%;height:3%;pointer-events:none}.bn.p{background:#2fd98a40}.bn.q{background:#ff546838}
@@ -91,6 +93,7 @@ const fund=()=>S.fundBase+S.tx.reduce((a,t)=>a+(t.k=='dep'?t.a:t.k=='rep'?-t.a:0
 const uopt=(sel)=>'<option value=""></option>'+S.units.map(u=>`<option ${sel==u.n?'selected':''} value="${e(u.n)}">واحد شماره ${e(u.n)}</option>`).join('');
 function save(){localStorage.s6=JSON.stringify(S);$('#fundP').textContent='موجودی کل صندوق: '+fmt(fund())+' تومان';}
 function go(v,q){closeD();D.innerHTML='<div class="dh"><b>S6</b> ناوبری سریع</div>'+NAV.map(n=>`<a class="${n[0]==v?'on':''}" onclick="go('${n[0]}')">${n[1]}</a>`).join('');A.classList.toggle('na',!!q);A.innerHTML=V[v]();save();fitP();if(!q)scrollTo(0,0)}
+function imgMiss(i){i.parentNode.insertAdjacentHTML('afterbegin','<div class="miss">⚠️ فایل list-bg.jpg کنار index.html پیدا نشد.<br>آن را در همان پوشه / ریپو آپلود کنید و برنامه را از آدرس گیت‌هاب‌پیجز یا APK باز کنید، نه از فایل‌منیجر گوشی.</div>');i.remove()}
 function fitP(){document.querySelectorAll('.poster').forEach(p=>p.style.setProperty('--u',p.clientWidth/100+'px'))}addEventListener('resize',fitP)
 function b64(b){return new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result.split(',')[1]);f.readAsDataURL(b)})}
 async function saveFile(name,blob){name=name.replace(/[^\w.-]/g,'_');const C=window.Capacitor;if(C&&C.isNativePlatform&&C.isNativePlatform()){try{const r=await C.registerPlugin('Filesystem').writeFile({path:name,data:await b64(blob),directory:'CACHE'});await C.registerPlugin('Share').share({title:name,url:r.uri,dialogTitle:'ذخیره یا ارسال فایل'});return}catch(x){const m=String(x&&x.message||x);if(/cancel/i.test(m))return;toast('خطا: '+m)}}
@@ -124,8 +127,8 @@ group(){return`<div class="card"><h3>⚡ مکانیزم صدور و ثبت شا�
 <label>مبنای محاسبه مبلغ</label><label style="color:var(--blue)"><input type="radio" name="gm" value="rate" checked style="width:auto"> بر اساس شارژ اختصاصی هر واحد</label><label style="color:var(--tx)"><input type="radio" name="gm" value="flat" style="width:auto"> مبلغ یکسان برای همه</label>
 <input id="ga" type="number" placeholder="مبلغ یکسان (در صورت انتخاب)"><label>بابت / شرح</label><textarea id="gx"></textarea><button class="b-r w" onclick="grp()">🔥 اعمال و ثبت گروهی آنی</button></div>`},
 list(){return`<div class="card"><h3>✅ ثبت به صورت لیست</h3><label>عنوان لیست (مثلاً واریزی هزینه ساختمان بابت ...)</label><input id="lt" placeholder="مثلاً: شارژ آبان ۱۴۰۵"><label>تاریخ</label><input id="ld" value="${today()}"><button class="b-y w" onclick="newList()">➕ ساخت لیست جدید</button></div>
-${S.lists.map(L=>{const v=Object.values(L.r),p=v.filter(x=>x===true).length,n=v.filter(x=>x===false).length;const Y=i=>536+46*i,P=y=>(y/15.36).toFixed(2);return`<div class="card"><div class="lh"><h4>${e(L.t)}</h4><div class="cnt"><span class="g">✅ ${p}</span><span class="r">❌ ${n}</span><span>⬜ ${20-p-n}</span></div></div>
-<div class="poster" id="L${L.id}"><img src="list-bg.jpg" alt=""><div class="pt"><b>${e(L.t)}</b><small>${e(L.d)}</small></div>
+${S.lists.length?'':'<div class="card" style="text-align:center;color:var(--mu)">هنوز لیستی نساخته‌اید. بالا عنوان را بنویسید و «ساخت لیست جدید» را بزنید تا طرح عکس‌دار اینجا ظاهر شود.</div>'}${S.lists.map(L=>{const v=Object.values(L.r),p=v.filter(x=>x===true).length,n=v.filter(x=>x===false).length;const Y=i=>536+46*i,P=y=>(y/15.36).toFixed(2);return`<div class="card"><div class="lh"><h4>${e(L.t)}</h4><div class="cnt"><span class="g">✅ ${p}</span><span class="r">❌ ${n}</span><span>⬜ ${20-p-n}</span></div></div>
+<div class="poster" id="L${L.id}"><img src="list-bg.jpg" alt="" onerror="imgMiss(this)"><div class="pt"><b>${e(L.t)}</b><small>${e(L.d)}</small></div>
 ${S.units.slice(0,20).map((u,i)=>{const x=L.r[u.n],y=Y(i),t=P(y-23);return`<i class="bn ${x===true?'p':x===false?'q':''}" style="top:${t}%"></i><span class="nm" style="top:${t}%">${e(u.own||u.ten)}</span><a class="ht" style="top:${t}%;left:28.3%;width:16.6%" onclick="tog(${L.id},'${e(u.n)}',1)"></a><a class="ht" style="top:${t}%;left:7.3%;width:21%" onclick="tog(${L.id},'${e(u.n)}',0)"></a>${x===true?`<b class="mk g" style="top:${P(y)}%;left:42.6%">✓</b>`:''}${x===false?`<b class="mk q" style="top:${P(y)}%;left:25.9%">✕</b>`:''}`}).join('')}</div>
 <p style="color:var(--mu);font-size:11px;margin:8px 0 0">لمس «پرداخت شده» = ✓ سبز، لمس «در انتظار پرداخت» = ✕ قرمز، لمس دوباره = پاک شدن. نام مالک از بخش واحدها می‌آید.</p>
 <div class="row" style="margin-top:10px"><button class="b-y" onclick="exp('L${L.id}','pdf','S6-list-${L.id}')">⬇️ PDF</button><button onclick="exp('L${L.id}','jpg','S6-list-${L.id}')">🖼 JPEG</button><button class="b-r" onclick="delList(${L.id})">🗑 حذف</button></div></div>`}).join('')}`},
